@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Muscle groups!{% endblock %}
+
+{% block body %}
+    <div class="example-wrapper">
+        <div class="header-group">
+            <h1>Muscle Groups</h1>
+            {% if is_granted('ROLE_TRAINER') %}
+                <form class="add-form" action="{{ path('app_muscle_group') }}">
+                    <button class="add-btn">
+                        <div class="sign">+</div>
+                        <div class="text">Create</div>
+                    </button>
+                </form>
+                {% endif %}
+        </div>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Index</th>
+                <th>Name</th>
+                <th>Body Part</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for muscleGroup in muscleGroups %}
+                <tr>
+                    <td>{{ muscleGroup.id }}</td>
+                    <td>{{ muscleGroup.name }}</td>
+                    <td>{{ muscleGroup.bodyPart }}</td>
+                    <td>
+                        <div class="button-group">
+                            <form action="{{ path('muscle_group_exercises', { 'id': muscleGroup.id }) }}">
+                                <button class="view-btn">
+                                    <svg viewBox="0 0 24 24" class="svgIcon"><path d="M15 12c0 1.654-1.346 3-3
+                                        3s-3-1.346-3-3 1.346-3 3-3 3 1.346 3 3zm9-.449s-4.252 8.449-11.985 8.449c-7.18
+                                        0-12.015-8.449-12.015-8.449s4.446-7.551 12.015-7.551c7.694 0 11.985 7.551
+                                        11.985 7.551zm-7 .449c0-2.757-2.243-5-5-5s-5 2.243-5 5 2.243 5 5 5 5-2.243 5-5z"></path></svg>
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3">No records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function showExercises(id) {
+            console.log('showExercises', id);
+        }
+    </script>
+{% endblock %}

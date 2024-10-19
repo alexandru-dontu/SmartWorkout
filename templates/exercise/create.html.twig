@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Create Exercise{% endblock %}
+
+{% form_theme form 'bootstrap_5_horizontal_layout.html.twig' %}
+
+{% block body %}
+    <a href="{{ path('show_exercises') }}" class="previous">&#8249;</a>
+    <div class="example-wrapper">
+        {% if action == 'create' %}
+        <h1>Create an Exercise</h1>
+        {% else %}
+        <h1>Edit an Exercise</h1>
+        {% endif %}
+        {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
+        {{ form_end(form) }}
+
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ label }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+{% endblock %}

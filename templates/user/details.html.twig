@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Users!{% endblock %}
+
+{% block body %}
+    <a href="{{ path('show_users') }}" class="previous">&#8249;</a>
+    <div class="example-wrapper">
+        <div class="header-group">
+            <h1>User details:</h1>
+        </div>
+        <div class="card">
+            <div class="card-border-top"></div>
+            {% if user.image %}
+            <img class="img" src="{{ asset('uploads/images/' ~user.image.path) }}">
+            {% endif %}
+            <span> {{ user.name }}</span>
+            <p class="job"> {{ user.email }}</p>
+        </div>
+        <h1>Workouts:</h1>
+        <table>
+            <thead>
+            <tr>
+                <th>Index</th>
+                <th>Name</th>
+                <th>Created At</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for workout in workouts %}
+                <tr>
+                    <td>{{ workout.id }}</td>
+                    <td>{{ workout.name }}</td>
+                    <td>{{ workout.createdAt|date("F jS | g:i a") }}</td>
+                    <td>
+                        <div class="button-group">
+                            <form action="{{ path('workout_exercises', { 'id': workout.id }) }}">
+                                <button class="view-btn">
+                                    <svg viewBox="0 0 24 24" class="svgIcon">
+                                        <path d="M15 12c0 1.654-1.346 3-3
+                                        3s-3-1.346-3-3 1.346-3 3-3 3 1.346 3 3zm9-.449s-4.252 8.449-11.985 8.449c-7.18
+                                        0-12.015-8.449-12.015-8.449s4.446-7.551 12.015-7.551c7.694 0 11.985 7.551
+                                        11.985 7.551zm-7 .449c0-2.757-2.243-5-5-5s-5 2.243-5 5 2.243 5 5 5 5-2.243 5-5z"></path>
+                                    </svg>
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3">No records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <script>
+        function editExercise(id) {
+            console.log('edit', id);
+        }
+    </script>
+{% endblock %}

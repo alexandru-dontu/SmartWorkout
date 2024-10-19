@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Create Muscle Group{% endblock %}
+
+{% form_theme form 'bootstrap_5_horizontal_layout.html.twig' %}
+
+{% block body %}
+    <a href="{{ path('show_muscle_groups') }}" class="previous">&#8249;</a>
+    <div class="example-wrapper">
+    <h1>Create a new Muscle group:</h1>
+    {{ form_start(form) }}
+    {{ form_end(form) }}
+
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+    </div>
+{% endblock %}

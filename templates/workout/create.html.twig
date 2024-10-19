@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Create workout{% endblock %}
+{% form_theme form 'bootstrap_5_horizontal_layout.html.twig' %}
+
+{% block body %}
+    <a href="{{ path('show_workouts') }}" class="previous">&#8249;</a>
+    <div class="example-wrapper">
+        <h1>Create a new Workout</h1>
+        {{ form_start(form) }}
+        <ul class="exerciseLogs"
+            data-index="{{ form.exerciseLogs|length > 0 ? form.exerciseLogs|last.vars.name + 1 : 0 }}"
+            data-prototype="{{ form_widget(form.exerciseLogs.vars.prototype)|e('html_attr') }}">
+
+            {% for exerciseLog in form.exerciseLogs %}
+                <li>{{ form_row(exerciseLog) }}</li>
+            {% endfor %}
+        </ul>
+        <div class="add_item_link" data-collection-holder-class="exerciseLogs">
+            <button type="button" class="add-log-button">
+                <span class="button__text">Add an Exercise Log</span>
+                <span class="button__icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" stroke="currentColor" height="24" fill="none" class="svg"><line y2="19" y1="5" x2="12" x1="12"></line><line y2="12" y1="12" x2="19" x1="5"></line></svg></span>
+            </button>
+        </div>
+        {{ form_end(form) }}
+
+        <script>
+            document
+                .querySelectorAll('.add_item_link')
+                .forEach(btn => {
+                    btn.addEventListener("click", addFormToCollection)
+                });
+
+            function addFormToCollection(e) {
+                const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
+
+                const item = document.createElement('li');
+
+                item.innerHTML = collectionHolder
+                    .dataset
+                    .prototype
+                    .replace(
+                        /__name__/g,
+                        collectionHolder.dataset.index
+                    );
+
+                collectionHolder.appendChild(item);
+
+                collectionHolder.dataset.index++;
+
+                // add remove button
+                const removeFormButton = document.createElement('button');
+                removeFormButton.className = 'remove-item-link';
+                removeFormButton.innerText = 'Remove this Exercise Log';
+
+                item.append(removeFormButton);
+
+                removeFormButton.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    // remove the li for the exerciseLog form
+                    item.remove();
+                });
+            }
+        </script>
+    </div>
+{% endblock %}
