@@ -48,8 +48,7 @@ class ExerciseRepository extends ServiceEntityRepository
      */
     public function update(Exercise $exercise)
     {
-        $this->getEntityManager()->persist($exercise);
-        $this->getEntityManager()->flush();
+        $this->create($exercise);
     }
 
     /**

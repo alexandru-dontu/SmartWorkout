@@ -46,7 +46,7 @@ class ExerciseService
             // Check if an exercise with the same name already exists
             $existingExercise = $this->exerciseRepository->findByName($exercise->getName());
             if ($existingExercise) {
-                throw new \Exception('An exercise with this name already exists!'); // Throw an error if it exists
+                throw new \UpdateException('An exercise with this name already exists!'); // Throw an error if it exists
             }
             // Handle image upload if an image file is provided
             if ($imageFile) {
@@ -67,7 +67,7 @@ class ExerciseService
             // Check if another exercise with the same name exists, excluding the current one
             $existingExercise = $this->exerciseRepository->findByNameExcludingId($exercise->getName(), $exercise->getId());
             if ($existingExercise) {
-                throw new \Exception('An exercise with this name already exists!'); // Throw an error if it exists
+                throw new \UpdateException('An exercise with this name already exists!'); // Throw an error if it exists
             }
             // Handle image upload if an image file is provided
             if ($imageFile) {
@@ -99,7 +99,7 @@ class ExerciseService
             );
         } catch (FileException $e) {
             // Throw an error if the file cannot be moved
-            throw new \Exception('Could not move the file: '.$e->getMessage());
+            throw new \FileErrorException('Could not move the file: '.$e->getMessage());
         }
 
         // Create a new Image entity and associate it with the exercise

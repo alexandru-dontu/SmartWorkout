@@ -142,14 +142,6 @@ a, .navbar-brand, .navbar-nav {
     background: linear-gradient(144deg, rgba(1, 164, 181, 0.5), rgba(0, 83, 163, 0.6) 50%, rgba(1, 164, 181, 0.5));
 }
 
-.sign {
-    width: 100%;
-    transition-duration: 0.4s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
 .sign svg {
     width: 17px;
 }
@@ -440,11 +432,6 @@ table {
     border-radius: 1em;
 }
 
-thead {
-    top: 0;
-    position: sticky;
-}
-
 th {
     font-size: large;
     padding: 15px;
@@ -461,6 +448,8 @@ td {
 }
 
 thead {
+    top: 0;
+    position: sticky;
     background: linear-gradient(to right, #1e5799 0%,#2ce0bf 19%,#76dd2c 40%,#dba62b 60%,#e02cbf 83%,#1e5799 100%);
     background-size: 2000px 100%;
     animation: bg 20s linear infinite ;
@@ -909,12 +898,11 @@ form {
 .edit-button:hover .edit-svgIcon {
     width: 20px;
     transition-duration: 0.3s;
-    transform: translateY(60%);
+    transform: translateY(60%) rotate(360deg);
     -webkit-transform: rotate(360deg);
     -moz-transform: rotate(360deg);
     -o-transform: rotate(360deg);
     -ms-transform: rotate(360deg);
-    transform: rotate(360deg);
 }
 
 .edit-button::before {

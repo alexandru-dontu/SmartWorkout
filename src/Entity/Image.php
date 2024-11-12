@@ -78,11 +78,9 @@ class Image
     // Removes a user from the image's collection and sets the user's image to null
     public function removeUser(User $user): static
     {
-        if ($this->users->removeElement($user)) {
-            // Ensure the user's image is null if it was set to this image
-            if ($user->getImage() === $this) {
-                $user->setImage(null);
-            }
+        // Ensure the user's image is null if it was set to this image
+        if ($this->users->removeElement($user) && $user->getImage() === $this) {
+            $user->setImage(null);
         }
 
         return $this;

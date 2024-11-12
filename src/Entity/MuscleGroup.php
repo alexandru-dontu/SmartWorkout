@@ -95,11 +95,9 @@ class MuscleGroup
     // Removes an exercise from the muscle group's collection
     public function removeExercise(Exercise $exercise): static
     {
-        if ($this->exercises->removeElement($exercise)) {
-            // Ensures that the owning side is properly set to null if it's no longer associated
-            if ($exercise->getMuscleGroup() === $this) {
-                $exercise->setMuscleGroup(null);
-            }
+        // Ensures that the owning side is properly set to null if it's no longer associated
+        if ($this->exercises->removeElement($exercise) && $exercise->getMuscleGroup() === $this) {
+            $exercise->setMuscleGroup(null);
         }
 
         return $this;

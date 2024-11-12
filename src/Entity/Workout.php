@@ -112,10 +112,8 @@ class Workout
     // Removes an exercise log from the workout and resets the reference in the log
     public function removeExerciseLog(ExerciseLog $exerciseLog): static
     {
-        if ($this->exerciseLogs->removeElement($exerciseLog)) {
-            if ($exerciseLog->getWorkout() === $this) {
-                $exerciseLog->setWorkout(null);  // Reset the owning side
-            }
+        if ($this->exerciseLogs->removeElement($exerciseLog) && $exerciseLog->getWorkout() === $this) {
+            $exerciseLog->setWorkout(null);  // Reset the owning side
         }
 
         return $this;

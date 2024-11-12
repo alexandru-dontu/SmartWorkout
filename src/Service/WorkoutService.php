@@ -26,7 +26,7 @@ class WorkoutService
 
             if ($existingWorkout) {
                 // Throw an exception if the workout already exists
-                throw new \Exception('A workout with this name already exists!');
+                throw new \CreateErrorException('A workout with this name already exists!');
             }
 
             // Create the new workout using the repository

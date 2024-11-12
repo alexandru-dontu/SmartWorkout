@@ -174,10 +174,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     // Removes a workout from the user's workout collection and resets the association
     public function removeWorkout(Workout $workout): static
     {
-        if ($this->workouts->removeElement($workout)) {
-            if ($workout->getPerson() === $this) {
-                $workout->setPerson(null);  // Reset the owning side
-            }
+        if ($this->workouts->removeElement($workout) && $workout->getPerson() === $this) {
+            $workout->setPerson(null);  // Reset the owning side
         }
 
         return $this;

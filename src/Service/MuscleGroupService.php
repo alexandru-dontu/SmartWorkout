@@ -24,7 +24,7 @@ class MuscleGroupService
             $existingMuscleGroup = $this->muscleGroupRepository->findByName($muscleGroup->getName());
             if ($existingMuscleGroup) {
                 // Throw an exception if the muscle group already exists
-                throw new \Exception('A muscle group with this name already exists!');
+                throw new \CreateErrorException('A muscle group with this name already exists!');
             }
 
             // Create the new muscle group using the repository

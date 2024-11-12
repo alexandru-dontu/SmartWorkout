@@ -11,7 +11,7 @@
         <div class="card">
             <div class="card-border-top"></div>
             {% if user.image %}
-            <img class="img" src="{{ asset('uploads/images/' ~user.image.path) }}">
+            <img class="img" src="{{ asset('uploads/images/' ~user.image.path) }}" alt="User Profile">
             {% endif %}
             <span> {{ user.name }}</span>
             <p class="job"> {{ user.email }}</p>
