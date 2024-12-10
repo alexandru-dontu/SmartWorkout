@@ -9,6 +9,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -31,6 +32,10 @@ class ExerciseType extends AbstractType
             ->add('isBodyWeight', CheckboxType::class, [
                 'label' => 'Is body weight',    // Label for the checkbox
                 'required' => false,            // Field is optional
+            ])
+            ->add('instructions', TextareaType::class, [
+                'label' => 'Instructions',
+                'required' => false,
             ])
             ->add('image_file', FileType::class, [
                 'label' => 'Image (JPEG/PNG)',  // Label for the image upload field

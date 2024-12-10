@@ -53,10 +53,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToOne(inversedBy: 'users')]
     private ?Image $image = null;
 
+    /**
+     * @var Collection<int, UserWeights>
+     */
+    #[ORM\OneToMany(targetEntity: UserWeights::class, mappedBy: 'user', orphanRemoval: true)]
+    private Collection $weights;
+
     // Constructor to initialize the $workouts collection as an ArrayCollection
     public function __construct()
     {
         $this->workouts = new ArrayCollection();
+        $this->weights = new ArrayCollection();
     }
 
     // Getter for the ID
@@ -190,6 +197,53 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setImage(?Image $image): static
     {
         $this->image = $image;
+
+        return $this;
+    }
+
+    public function getWeights()
+    {
+        return $this->weights;
+    }
+
+    public function getLatestWeight(): ?float
+    {
+        $weights = $this->weights->toArray();
+
+        if (empty($weights)) {
+            return null;
+        }
+
+        usort($weights, fn(UserWeights $a, UserWeights $b) => $b->getDateRecorded() <=> $a->getDateRecorded());
+
+        return $weights[0]->getWeight();
+    }
+
+    public function setUserWeights(?UserWeights $userWeights): static
+    {
+        $this->userWeights = $userWeights;
+
+        return $this;
+    }
+
+    public function addWeight(UserWeights $weight): static
+    {
+        if (!$this->weights->contains($weight)) {
+            $this->weights->add($weight);
+            $weight->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWeight(UserWeights $weight): static
+    {
+        if ($this->weights->removeElement($weight)) {
+            // set the owning side to null (unless already changed)
+            if ($weight->getUser() === $this) {
+                $weight->setUser(null);
+            }
+        }
 
         return $this;
     }

@@ -34,10 +34,13 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
+        # Allow logged-in users to access their own profiles
+        - { path: ^/users/\d+/profile, roles: IS_AUTHENTICATED_FULLY }
+        # Restrict other /users routes to trainers
         - { path: ^/users, roles: ROLE_TRAINER }
         - { path: ^/muscle/group/create, roles: ROLE_TRAINER }
         - { path: ^/exercise/create, roles: ROLE_TRAINER }
-        #- { path: ^/workout, roles: IS_AUTHENTICATED_FULLY }
+        # - { path: ^/workout, roles: IS_AUTHENTICATED_FULLY }
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
 

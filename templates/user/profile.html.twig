@@ -1,0 +1,99 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profile!{% endblock %}
+
+{% block body %}
+    <div class="example-wrapper">
+        <div class="header-group">
+            <h1>My Profile</h1>
+        </div>
+        <div class="profile">
+            <div class="card">
+                <div class="card-border-top"></div>
+                {% if user.image %}
+                    <img class="img" src="{{ asset('uploads/images/' ~ user.image.path) }}" alt="User Profile">
+                {% endif %}
+                <span>{{ user.name }}</span>
+                <p class="job">{{ user.email }}</p>
+            </div>
+            <div class="container mt-4">
+                <canvas id="weightChart"></canvas>
+            </div>
+        </div>
+        <div class="profile">
+            <div class="container mt-4">
+                <p>Change Profile Picture</p>
+                <form action="{{ path('upload_profile_image', { id: user.id }) }}" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="profileImage">Upload New Image</label>
+                        <input type="file" name="profileImage" id="profileImage" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-success mt-2">Upload</button>
+                </form>
+            </div>
+
+            <div class="container mt-4">
+                <p>Current Weight: {{ weight is not null ? weight ~ ' KG' : 'No weight recorded yet.' }}</p>
+
+                <!-- Form to add new weight -->
+                <form action="{{ path('add_user_weight') }}" method="post">
+                    <div class="form-group">
+                        <label for="weight">Add New Weight</label>
+                        <input type="number" step="0.1" name="weight" id="weight" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-success mt-2">Save Weight</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add JavaScript to render the chart -->
+    <script>
+        // Initialize ctx only if not already defined
+        let ctx = document.getElementById('weightChart').getContext('2d');
+
+        // Ensure weightData is passed in correctly and avoid redeclaration
+        const weightData = {{ weightData|json_encode|raw }};
+
+        const labels = weightData.map(data => data.dateRecorded);
+        const weights = weightData.map(data => data.weight);
+
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Your Weight',
+                    data: weights,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    fill: false,
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Date'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Weight (KG)'
+                        },
+                        beginAtZero: false
+                    }
+                }
+            }
+        });
+    </script>
+{% endblock %}

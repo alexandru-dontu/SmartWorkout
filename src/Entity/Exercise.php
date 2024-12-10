@@ -31,6 +31,9 @@ class Exercise
     #[ORM\Column]
     private ?bool $isBodyWeight = null;
 
+    #[ORM\Column(length: 2048, nullable: true)]
+    private ?string $instructions = null;
+
     // Getter for $id, returns the unique identifier of the exercise
     public function getId(): ?int
     {
@@ -89,6 +92,18 @@ class Exercise
     public function setIsBodyWeight(bool $isBodyWeight): static
     {
         $this->isBodyWeight = $isBodyWeight;
+
+        return $this;
+    }
+
+    public function getInstructions(): ?string
+    {
+        return $this->instructions;
+    }
+
+    public function setInstructions(?string $instructions): static
+    {
+        $this->instructions = $instructions;
 
         return $this;
     }

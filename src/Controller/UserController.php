@@ -3,10 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\Image;
 use App\Form\UserType;
 use App\Repository\UserRepository;
+use App\Repository\ImageRepository;
 use App\Service\WorkoutService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -92,5 +95,68 @@ class UserController extends AbstractController
             'user' => $user, // Pass the user data to the view
             'workouts' => $workouts, // Pass the user's workouts to the view
         ]);
+    }
+
+    #[Route('/users/{id}/profile', name: 'user_profile')]
+    public function showUserProfile(User $user): Response
+    {
+        $currentUser = $this->getUser();
+
+        // Check if the logged-in user matches the profile being accessed
+        if ($currentUser->getId() !== $user->getId()) {
+            throw $this->createAccessDeniedException('Access denied: You can only view your own profile.');
+        }
+
+        $weight = $user->getLatestWeight();
+
+        $weights = $user->getWeights();
+
+        $weightData = [];
+        foreach ($weights as $weight) {
+            $weightData[] = [
+                'dateRecorded' => $weight->getDateRecorded()->format('Y-m-d'),
+                'weight' => $weight->getWeight(),
+            ];
+        }
+
+        return $this->render('user/profile.html.twig', [
+            'user' => $user, // Pass the user data to the view
+            'weight' => $weights ? $weights->last()->getWeight() : null,
+            'weightData' => $weightData,
+        ]);
+    }
+
+    #[Route('/users/{id}/profile/upload', name: 'upload_profile_image')]
+    public function UploadProfileImage(UserRepository $userRepository, ImageRepository $imageRepository, Request $request): Response
+    {
+        $user = $this->getUser();
+
+        $uploadedFile = $request->files->get('profileImage');
+
+        if ($uploadedFile instanceof UploadedFile) {
+            $uploadDir = $this->getParameter('images_directory');
+            //dd($uploadDir);
+            try {
+                $newFilename = uniqid() . '.' . $uploadedFile->guessExtension();
+                $uploadedFile->move($uploadDir, $newFilename);
+
+                $image = new Image();
+                $image->setPath($newFilename);
+
+                $imageRepository->save($image);
+
+                $user->setImage($image);
+
+                $userRepository->saveUser($user);
+
+                $this->addFlash('success', 'Profile picture updated successfully!');
+            } catch (FileException $e) {
+                $this->addFlash('error', 'Failed to upload image: ' . $e->getMessage());
+            }
+        } else {
+            $this->addFlash('error', 'No file was uploaded.');
+        }
+
+        return $this->redirectToRoute('user_profile', ['id' => $user->getId()]);
     }
 }

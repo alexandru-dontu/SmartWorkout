@@ -37,7 +37,8 @@
                             <img class="draw" src="{{ asset('uploads/images/' ~exercise.image.path) }}"
                                  alt="{{ exercise.name }}" style="width:100%;max-width:70px"
                                  data-exercise-name="{{ exercise.name }}"
-                                 onclick="showModal('{{ asset('uploads/images/' ~exercise.image.path) }}', '{{ exercise.name }}')">
+                                 data-instructions="{{ exercise.instructions|e('js') }}"
+                                 onclick="showModal('{{ asset('uploads/images/' ~exercise.image.path) }}', '{{ exercise.name }}', '{{ exercise.instructions|e('js') }}')">
                             <span class="b1"></span>
                             <span class="b2"></span>
                             <span class="b3"></span>
@@ -98,6 +99,7 @@
                 </div>
                 <div class="modal-body">
                     <img id="modalImage" src="" class="img-fluid" alt="Full-size Image">
+                    <p id="modalText"></p>
                 </div>
             </div>
         </div>
@@ -111,9 +113,12 @@
             console.log('delete', id);
         }
 
-        function showModal(imageSrc, exerciseName) {
+        function showModal(imageSrc, exerciseName, instructions) {
+            const formattedInstructions = instructions.replace(/\\n/g, '\n');
+
             document.getElementById('modalImage').src = imageSrc;
             document.getElementById('modalTitle').innerText = exerciseName;
+            document.getElementById('modalText').innerText = formattedInstructions;
             const myModal = new bootstrap.Modal(document.getElementById('imageModal'));
             myModal.show();
             //document.querySelector('.btn-close').addEventListener('click', () => {
