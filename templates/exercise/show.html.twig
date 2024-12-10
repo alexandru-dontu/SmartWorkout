@@ -33,12 +33,12 @@
                 <tr>
                     <td>{{ exercise.id }}</td>
                     <td>
-                        <button class="border-el-btn">
+                        <button class="border-el-btn" onclick="showModal('{{ asset('uploads/images/' ~exercise.image.path) }}',
+                                '{{ exercise.name }}', '{{ exercise.instructions|e('js') }}')">
                             <img class="draw" src="{{ asset('uploads/images/' ~exercise.image.path) }}"
                                  alt="{{ exercise.name }}" style="width:100%;max-width:70px"
                                  data-exercise-name="{{ exercise.name }}"
-                                 data-instructions="{{ exercise.instructions|e('js') }}"
-                                 onclick="showModal('{{ asset('uploads/images/' ~exercise.image.path) }}', '{{ exercise.name }}', '{{ exercise.instructions|e('js') }}')">
+                                 data-instructions="{{ exercise.instructions|e('js') }}">
                             <span class="b1"></span>
                             <span class="b2"></span>
                             <span class="b3"></span>
@@ -98,7 +98,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <img id="modalImage" src="" class="img-fluid" alt="Full-size Image">
+                    <img id="modalImage" src="" class="img-fluid" alt="Full-size">
                     <p id="modalText"></p>
                 </div>
             </div>

@@ -26,7 +26,7 @@ class ImageService
         try {
             $imageFile->move($this->imagesDirectory, $newFilename);
         } catch (FileException $e) {
-            throw new \RuntimeException('Failed to upload image: ' . $e->getMessage());
+            throw new \ImageUploadException('Failed to upload image: ' . $e->getMessage());
         }
 
         return $newFilename;

@@ -218,33 +218,4 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $weights[0]->getWeight();
     }
-
-    public function setUserWeights(?UserWeights $userWeights): static
-    {
-        $this->userWeights = $userWeights;
-
-        return $this;
-    }
-
-    public function addWeight(UserWeights $weight): static
-    {
-        if (!$this->weights->contains($weight)) {
-            $this->weights->add($weight);
-            $weight->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeWeight(UserWeights $weight): static
-    {
-        if ($this->weights->removeElement($weight)) {
-            // set the owning side to null (unless already changed)
-            if ($weight->getUser() === $this) {
-                $weight->setUser(null);
-            }
-        }
-
-        return $this;
-    }
 }

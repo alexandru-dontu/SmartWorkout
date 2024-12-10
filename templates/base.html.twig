@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Welcome!{% endblock %}</title>
@@ -17,7 +17,7 @@
     <nav class="navbar sticky-top navbar-inverse">
         <div class="nav-container">
             <a class="navbar-brand">
-                <img src="{{ asset('images/logo-no-background.png') }}" alt="Example Image" width="50">
+                <img src="{{ asset('images/logo-no-background.png') }}" alt="Example" width="50">
             </a>
             <div class="navbar-header center">
                 <a class="navbar-brand smart">Smart Workout</a>
@@ -56,7 +56,7 @@
                     </li>
                     {% if app.user.image %}
                     <div class="user-img">
-                        <img class="img" src="{{ asset('uploads/images/' ~app.user.image.path) }}" width="50">
+                        <img class="img" alt="User" src="{{ asset('uploads/images/' ~app.user.image.path) }}" width="50">
                     </div>
                     {% endif %}
                     <li>
@@ -79,7 +79,7 @@
             {% else %}
                 <ul class="nav navbar-nav navbar-right" id="greeting">
                     <li id="hello" class="center">
-                        <a class="smart"></a>
+                        <a class="smart">Hello!</a>
                     </li>
                     <li>
                         <button class="Btn">
